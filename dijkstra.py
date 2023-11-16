@@ -3,15 +3,17 @@ import sys
 class Graph:
 
     def __init__(self): #initialize set of nodes, and dict of edges. 
-        self.nodes = {'A','B','C','D','E','F'}
-        self.edges = {
-            'A': [('B', 11), ('C', 16)],
-            'B': [('A', 11), ('C', 14), ('D', 18)],
-            'C': [('A', 16), ('B', 14), ('D', 10), ('E', 17)],
-            'D': [('B', 18), ('C', 10), ('E', 15), ('F', 12)],
-            'E': [('C', 17), ('D', 15), ('F', 16)],
-            'F': [('D', 12), ('E', 16)]
-            }
+        self.nodes = set()
+        self.edges = {}
+
+    def addNode(self, value):
+        self.nodes.add(value)
+        if value not in self.edges:
+            self.edges[value] = []
+
+    def addEdge(self, from_node, to_node, weight):
+        self.edges[from_node].append((to_node, weight))
+        self.edges[to_node].append((from_node, weight))
 
     def djikstraAlgorithm(self, start_node, end_node):
         unvisited_dict = {node: sys.maxsize for node in self.nodes} #initializes dictionary containing nodes as keys and infinity
@@ -54,19 +56,4 @@ class Graph:
                         break
             
             path.insert(0, start_node)
-            print(f"Nodes: {self.nodes}")
-            print(f"Edges: {self.edges}")
             return path
-
-g = Graph()
-
-start_node = input("Enter start node: ").upper()
-end_node = input("Enter end node: ").upper()
-
-shortest_path = g.djikstraAlgorithm(start_node, end_node)
-
-if shortest_path:
-    print(f"Shortest path from {start_node} to {end_node}: {' -> '.join(shortest_path)}")
-
-else:
-    print(f"No path from {start_node} to {end_node} found.")
