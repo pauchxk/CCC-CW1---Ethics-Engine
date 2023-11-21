@@ -2,6 +2,7 @@ import dijkstra
 
 #example 1 - small scale graph#
 '''g = Graph()
+
 g.addNode("A")
 g.addNode("B")
 g.addNode("C")
@@ -21,7 +22,7 @@ g.addEdge('E', 'F', 12)'''
 
 #example 2 - large scale town graph#
 town = dijkstra.Graph()
-# Adding nodes
+#adding nodes#
 town.addNode('A')
 town.addNode('A1')
 town.addNode('A2')
@@ -56,7 +57,7 @@ town.addNode('A30')
 town.addNode('A31')
 town.addNode('B')
 
-# Adding edges (risk data)
+#adding edges (risk data)#
 '''town.addEdge('A', 'A1', 5)
 town.addEdge('A1', 'A', 5)
 town.addEdge('A1', 'A2', 9)
@@ -206,7 +207,7 @@ town.addEdge('A31', 'A23', 10)
 
 town.addEdge('B', 'A30', 5)'''
 
-# Adding edges (distance data)
+#adding edges (distance data)#
 '''town.addEdge('A', 'A1', 5)
 town.addEdge('A1', 'A', 5)
 town.addEdge('A1', 'A2', 17)
@@ -356,7 +357,8 @@ town.addEdge('A31', 'A23', 10)
 
 town.addEdge('B', 'A30', 5)'''
 
-# Adding edges (average of distance and risk weightings)
+#adding edges (average of distance and risk data)#
+#risk#
 edges_data_1 = [
     ('A', 'A1', 5), ('A1', 'A', 5), ('A1', 'A2', 9), ('A1', 'A10', 22),
     ('A1', 'A4', 13), ('A1', 'A9', 24), ('A1', 'A8', 20), ('A2', 'A1', 9),
@@ -389,7 +391,8 @@ edges_data_1 = [
     ('A30', 'A31', 22), ('A30', 'B', 5), ('A31', 'A30', 22), ('A31', 'A24', 22),
     ('A31', 'A23', 10), ('B', 'A30', 5)
 ]
-
+#creates 2 lists, each containing the graph data of one graph's weightings#
+#distance#
 edges_data_2 = [
     ('A', 'A1', 5), ('A1', 'A', 5), ('A1', 'A2', 17), ('A1', 'A10', 4),
     ('A1', 'A4', 19), ('A1', 'A9', 3), ('A1', 'A8', 5), ('A2', 'A1', 17),
@@ -423,22 +426,26 @@ edges_data_2 = [
     ('A31', 'A23', 10), ('B', 'A30', 5)
 ]
 
-# Combine edges_data_1 and edges_data_2, and calculate the average for each edge
-combined_edges_data = [(edge[0], edge[1], (edge[2] + edges_data_2[idx][2]) // 2) for idx, edge in enumerate(edges_data_1)]
+#combine edges_data_1 and edges_data_2, and calculate the average for each edge#
+combined_edges_data = [(edge[0], edge[1], (edge[2] + edges_data_2[i][2]) // 2) for i, edge in enumerate(edges_data_1)]
 
-# Adding combined edges to the town
+#adding combined edges to the graph#
 for edge in combined_edges_data:
     town.addEdge(*edge)
 print(town.edges)
 
+#set start nodes#
 start_node = "A"
 end_node = "B"
 
+#run algorithm with above data#
 shortest_path = town.djikstraAlgorithm(start_node, end_node)
 
+#if path variable is not null, format output with start, end and node path#
 if shortest_path:
     print(f"Shortest path from {start_node} to {end_node}: {' -> '.join(shortest_path)}")
 
+#if path variable is null, return that no path has been found#
 else:
     print(f"No path from {start_node} to {end_node} found.")
 
