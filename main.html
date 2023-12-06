@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="en-gb">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link href="style.css" rel="stylesheet" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed&display=swap" rel="stylesheet">
+
+        <title>CCC CW1: Ethics Engine</title>
+    </head>
+
+<body>
+
+    <div class="title-container">
+        <h1>CW1: ETHICS ENGINE FOR A SELF-DRIVING CAR</h1>
+    </div>
+
+    <div class="heading-container">
+
+        <div class="heading-column">
+            <h2>Design and Justifications</h2>
+        </div>
+
+        <div class="heading-column">
+            <h2>The Algorithm</h2>
+        </div>
+
+        <div class="heading-column">
+            <h2>The Graph</h2>
+        </div>
+
+    </div>
+
+    <div class="parent-container">
+
+        <div class="child-container">
+            
+            <div class="column-container">
+
+                <p>
+                    For CCC CW1, I needed to create an algorithm to find the shortest route through a weighted graph. This is an analogy for a self-driving car finding the fastest route through a town, with nodes representing intersections and edges representing roads. However, this graph also needs to represent risk level, and a self-driving car would also need to take safety into account when choosing a route. So, the challenge is to figure out how I can translate the complex ethical issue of risk into something simple that can be used by a computer to make decisions. The first step would be to choose an ethical framework to work with. For this task, I chose Utilitarianism. Utilitarianism is a consequentialist theory of ethics that argues an action is right if it causes happiness or pleasure, and wrong if it causes unhappiness or pain; this is in relation to both the performer of the action and the people affected by it. Consequentialism is the general doctrine within some ethical theories that actions should be evaluated on their consequences, rather than other measures like rules or the characteristics of the action itself. By extension, the best action is the one that produces the most happiness for the most people, and vice versa. Essentially, Utilitarianism quantifies ethics. 
+                </p>
+
+            </div>
+
+            <div class="column-container">
+
+                <p>
+                    The benefit of consequentialism is that with Utilitarianism, you can decide whether an action is good or not on a case-by-case basis, rather than having to consult a rule-book or one’s deepest inner thoughts. This is both simpler and faster, both key factors in an ethics engine that relies on split-second decisions. Additionally, the quantifiability of Utilitarianism is very beneficial in that it means I can translate risk level into a single number, based on the severity of the risk – and I can then use this number as a weighting. This is a simple but efficient translation of ethical principles. This algorithm is based on a modified version of Djikstra’s shortest-path graph traversal algorithm. It works by comparing two versions of the same graph, in which the weightings are set based on a) distance, and b) risk. The algorithm combines them by calculating the average weightings of the two graphs, plots the new graph with the new weightings then finds the ‘fastest’ route (meaning the path in which the total weighting is the smallest) through it using Dijkstra’s algorithm. The output is the most efficient path in regards to an equal distribution of relative importance across both objectives.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="child-container">
+
+            <ul>
+
+                <li>
+                    1: Create two sets of weightings for a given graph. One set represents the risk associated with travelling on that edge; the other represents the distance that edge spans.
+                </li>
+
+                <li>
+                    1.1: To calculate risk, use zoning. Red zones equal high-density foot and vehicle traffic, and thus it is a high risk area. Roads (edges) on or within red zones have 20 points added to their risk score (weighting). Blue zones have roughly half the level of traffic as red zones. Roads on or within blue zones have 10 points added to their risk score. Green zones have roughly half the level of traffic as blue zones. Roads on or within green zones have 5 points added to their risk score. Additionally, any building on a road adds 2 points to its risk score, as more buildings means more traffic, and therefore higher risk of accident.
+                </li>
+
+                <li>
+                    1.2: To calculate distance, measure the actual distance that an edge on a graph spans by using the grid reference on the page behind it. Yes, the distance that the edges span is arbitrary as I created the graph; this does not make it less important, since I also made up everything else and therefore it is also arbitrary. So, a line that spans 15 boxes is assigned a distance value (weighting) of 15.
+                </li>
+
+                <li>
+                    2: Create a list of edges and nodes for both graphs.
+                </li>
+
+                <li>
+                    2.1: The list of nodes is self-explanatory. The list of edges is formatted as follows: (A: B, 5), (B: A, 5)
+
+                </li>
+
+                <li>
+                    3: Calculate an average for each pair of weightings; add this to a new list.
+                </li>
+
+                <li>
+                    3.1: For each edge on a graph, take its weighting and add it to the weighting of the corresponding edge on the other graph. Then, halve this number to find the average.
+                </li>
+
+                <li>
+                    4: Create a new graph based on these weightings and the original nodes and edges.
+                </li>
+
+                <li>
+                    5: Traverse the new graph using Dijkstra’s algorithm, finding the shortest path with a weighting that is based on an equal measure of both safety and speed.
+                </li>
+            </ul>
+
+            <div class="hlink-container">
+
+                <a href="code.html" target="_blank">WORKING ALGORITHM!</a>
+                
+            </div>
+
+        </div>
+
+        <div class="child-container">
+
+            <div class="row-container">
+
+                <img src="risk graph black.png" alt="A graph weighted by the risk of travelling down the given edge."
+                width="476px" height="556px"/>
+
+                <h3>Risk-Weighted Graph</h3>
+
+                <p>
+                    This graph is an example town, with the weightings assigned to each edge representing the risk level of travelling down that particular road. As mentioned in Design and Justifications, the edges are calculated by adding together the higher zone score with the amount of buildings on the edge.
+                </p>
+
+            </div>
+
+            <div class="row-container">
+
+                <img src="distance graph.png" alt="A graph weighted by the distance that the given edge spans."
+                width="476px" height="556px"/>
+
+                <h3>Distance-Weighted Graph</h3>
+
+                <p>
+                    This graph is the same example town, but with the weightings assigned to each edge instead representing the actual distance that that particular road spans. As mentioned in Design and Justifications, the edges here are calculated by digitally measuring the distance between nodes with a grid reference.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
